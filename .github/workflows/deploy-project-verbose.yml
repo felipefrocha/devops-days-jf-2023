@@ -1,9 +1,6 @@
 name: "Deployment - INFRA"
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - develop
@@ -53,9 +50,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-terraform-${{ hashFiles('**/service.tf') }}
 
-      - name: Check folder
-        run: ls -la build/**/*
-
       # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -64,8 +58,9 @@ jobs:
 
       - name: Setup Teraform environment
         env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_TOKEN_ID: ${{secrets.AWS_SECRET_TOKEN_ID}}
+          AWS_SESSION_TOKEN: ${{secrets.AWS_SESSION_TOKEN}}
         run: scripts/cli --tfvars
         
       - name: Terraform Init
