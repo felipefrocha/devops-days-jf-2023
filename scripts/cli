@@ -1,0 +1,62 @@
+#!/bin/bash
+set -exou pipefail
+
+function create_tfvars() {
+  cat >projects/client-serices-infra/var.auto.tfvars <<EOF
+# Configs
+environment = "${ENVIRONMENT}"
+region = "${AWS_DEFAULT_REGION}"
+project = "devops"
+server_name = "lexcorp.com"
+organization_name = "lexcorp"
+download_certs = false
+hosted_zone = "lexcorp.com"
+route53_by_environment = false
+access_key = "${AWS_ACCESS_KEY_ID}"
+secret_key = "${AWS_SECRET_TOKEN_ID}"
+token = "${AWS_SESSION_TOKEN}"
+EOF
+  cat projects/client-serices-infra/var.auto.tfvars
+}
+
+function create_backend_config() {
+  cat >terraform/backend.tfvars <<EOF
+# Configs
+
+EOF
+  cat terraform/backend.tfvars
+}
+
+function help_menu() {
+  cat <<EOF
+Usage: ${0} (-h | [OPTIONS])             
+                      
+OPTIONS:
+   -h| --help                        Show this message
+   -t| --tfvars                      Create a variable file for terraform project
+   
+EOF
+  exit 0
+}
+
+[ "$#" -eq 0 ] && help_menu
+
+while [[ "$#" > 0 ]]; do
+  case "${1}" in
+  -t | --tfvars)
+    create_tfvars ${2}
+    shift
+    ;;
+  -h | --help)
+    help_menu
+    shift
+    ;;
+  *)
+    echo "${1} is not a valid flag, try running: ${0} --help"
+    help_menu
+    ;;
+  esac
+  shift
+done
+
+exit 0
