@@ -44,6 +44,3 @@ variable "route53_by_environment" {
   default     = true
 }
 
-variable "access_key" { sensitive = true }
-variable "secret_key" { sensitive = true }
-variable "token" { sensitive = true }

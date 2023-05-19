@@ -267,49 +267,49 @@ resource "aws_security_group" "adm_lb_sg" {
 
 /**
  * Load Balancer Application - Destination to main routes
- */
-resource "aws_lb" "adm_lb" {
-  name               = format("%s-alb-%s", var.project, local.env[var.environment])
-  internal           = false
-  load_balancer_type = "application"
-  security_groups = [
-  aws_security_group.adm_lb_sg.id]
-  subnets = module.vpc.public_subnets
+#  */
+# resource "aws_lb" "adm_lb" {
+#   name               = format("%s-alb-%s", var.project, local.env[var.environment])
+#   internal           = false
+#   load_balancer_type = "application"
+#   security_groups = [
+#   aws_security_group.adm_lb_sg.id]
+#   subnets = module.vpc.public_subnets
 
-  enable_deletion_protection = false
-  tags                       = local.tags
-}
+#   enable_deletion_protection = false
+#   tags                       = local.tags
+# }
 
-resource "aws_lb_listener" "https" {
-  load_balancer_arn = aws_lb.adm_lb.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate_validation.cert.certificate_arn
-  default_action {
-    type = "fixed-response"
+# resource "aws_lb_listener" "https" {
+#   load_balancer_arn = aws_lb.adm_lb.arn
+#   port              = "443"
+#   protocol          = "HTTPS"
+#   ssl_policy        = "ELBSecurityPolicy-2016-08"
+#   certificate_arn   = aws_acm_certificate_validation.cert.certificate_arn
+#   default_action {
+#     type = "fixed-response"
 
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "Sorry =(, this subdomain is not available! (@_@)"
-      status_code  = "404"
-    }
-  }
-}
+#     fixed_response {
+#       content_type = "text/plain"
+#       message_body = "Sorry =(, this subdomain is not available! (@_@)"
+#       status_code  = "404"
+#     }
+#   }
+# }
 
-resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.adm_lb.arn
-  port              = "80"
-  protocol          = "HTTP"
-  default_action {
-    type = "redirect"
+# resource "aws_lb_listener" "http" {
+#   load_balancer_arn = aws_lb.adm_lb.arn
+#   port              = "80"
+#   protocol          = "HTTP"
+#   default_action {
+#     type = "redirect"
 
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-}
+#     redirect {
+#       port        = "443"
+#       protocol    = "HTTPS"
+#       status_code = "HTTP_301"
+#     }
+#   }
+# }
 
 

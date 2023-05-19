@@ -49,7 +49,7 @@ resource "tls_private_key" "ca" {
 resource "tls_self_signed_cert" "ca" {
   count = var.create_tls && !var.ca_override ? 1 : 0
 
-  key_algorithm     = tls_private_key.ca[0].algorithm
+  # key_algorithm     = tls_private_key.ca[0].algorithm
   private_key_pem   = var.ca_key_override == "" ? tls_private_key.ca[0].private_key_pem : var.ca_key_override
   is_ca_certificate = true
 
@@ -73,7 +73,7 @@ resource "tls_private_key" "leaf" {
 resource "tls_cert_request" "leaf" {
   count = var.create_tls ? 1 : 0
 
-  key_algorithm   = tls_private_key.leaf[0].algorithm
+  # key_algorithm   = tls_private_key.leaf[0].algorithm
   private_key_pem = tls_private_key.leaf[0].private_key_pem
 
   dns_names    = var.dns_names
@@ -90,7 +90,7 @@ resource "tls_locally_signed_cert" "leaf" {
 
   cert_request_pem = tls_cert_request.leaf[0].cert_request_pem
 
-  ca_key_algorithm   = !var.ca_override ? element(concat(tls_private_key.ca[0].*.algorithm, tolist([""])), 0) : var.algorithm
+  # ca_key_algorithm   = !var.ca_override ? element(concat(tls_private_key.ca[0].*.algorithm, tolist([""])), 0) : var.algorithm
   ca_private_key_pem = var.ca_key_override == "" ? element(concat(tls_private_key.ca[0].*.private_key_pem, tolist([""])), 0) : var.ca_key_override
   ca_cert_pem        = var.ca_cert_override == "" ? element(concat(tls_self_signed_cert.ca.*.cert_pem, tolist([""])), 0) : var.ca_cert_override
 

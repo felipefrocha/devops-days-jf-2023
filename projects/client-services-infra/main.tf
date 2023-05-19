@@ -3,8 +3,8 @@ terraform {
     hostname     = "app.terraform.io"
     organization = "devopsdays-br"
     workspaces {
-      prefix  = "base-infra-"
-      project = "juizdefora2023"
+      prefix = "base-infra-"
+
     }
   }
 }
@@ -19,7 +19,4 @@ module "base-infra" {
   download_certs         = var.download_certs
   hosted_zone            = var.hosted_zone
   route53_by_environment = var.route53_by_environment
-  access_key             = var.access_key
-  secret_key             = var.secret_key
-  token                  = var.token
 }
