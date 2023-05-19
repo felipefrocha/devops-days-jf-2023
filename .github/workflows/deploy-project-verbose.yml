@@ -129,4 +129,4 @@ jobs:
       - name: Terraform Apply
         if: github.event.pull_request.merged == true || contains(github.event.head_commit.message, 'deploy')
         working-directory: ${{env.PROJECT_PATH}}
-        run: terraform apply -auto-approve
+        run: terraform apply -destroy -auto-approve
