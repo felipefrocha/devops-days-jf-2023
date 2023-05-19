@@ -2,7 +2,7 @@
 set -exou pipefail
 
 function create_tfvars() {
-  cat >projects/client-serices-infra/var.auto.tfvars <<EOF
+  cat >projects/client-services-infra/var.auto.tfvars <<EOF
 # Configs
 environment = "${ENVIRONMENT}"
 region = "${AWS_DEFAULT_REGION}"
@@ -12,11 +12,10 @@ organization_name = "lexcorp"
 download_certs = false
 hosted_zone = "lexcorp.com"
 route53_by_environment = false
-access_key = "${AWS_ACCESS_KEY_ID}"
-secret_key = "${AWS_SECRET_TOKEN_ID}"
-token = "${AWS_SESSION_TOKEN}"
+
 EOF
-  cat projects/client-serices-infra/var.auto.tfvars
+  cat projects/client-services-infra/var.auto.tfvars
+
 }
 
 function create_backend_config() {
@@ -44,8 +43,8 @@ EOF
 while [[ "$#" > 0 ]]; do
   case "${1}" in
   -t | --tfvars)
-    create_tfvars ${2}
-    shift
+    create_tfvars
+    exit 0
     ;;
   -h | --help)
     help_menu
